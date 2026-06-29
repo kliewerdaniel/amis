@@ -10,7 +10,7 @@ paths:
 
 llm:
   provider: ollama
-  model: llama3.2:1b
+  model: llama3.1:8b
   base_url: http://localhost:11434
   temperature: 0.1
   max_tokens: 4096
