@@ -1,3 +1,5 @@
+_JSON_ONLY = "\n\nIMPORTANT: Return ONLY valid JSON. Do not include any explanations or text before or after the JSON."
+
 SEMANTIC_ANALYSIS_PROMPT = """You are a marketing intelligence analyst. Analyze the following blog article and provide scores for each dimension below.
 
 Article Title: {title}
@@ -26,7 +28,7 @@ Respond in valid JSON format:
   }},
   "primary_audience": "...",
   "secondary_audience": "..."
-}}"""
+}}""" + _JSON_ONLY
 
 TOPIC_EXTRACTION_PROMPT = """Extract all topics and concepts from this blog article. Classify each into the appropriate category.
 
@@ -34,7 +36,7 @@ Article Title: {title}
 Article Content:
 {content}
 
-Return JSON:
+Return ONLY valid JSON with these keys:
 {{
   "topics": ["..."],
   "subtopics": ["..."],
@@ -49,7 +51,7 @@ Return JSON:
   "cloud_providers": ["..."],
   "security_topics": ["..."],
   "optimization_topics": ["..."]
-}}"""
+}}""" + _JSON_ONLY
 
 ENTITY_RECOGNITION_PROMPT = """Extract all named entities from this blog article. For each entity, provide its name, type, and a brief description.
 
@@ -59,19 +61,19 @@ Article Content:
 
 Entity types: person, company, book, repository, product, technology, protocol, standard, model, language, library, framework, api, cloud_service, research_paper
 
-Return JSON:
+Return ONLY valid JSON:
 {{
   "entities": [
     {{"name": "...", "type": "person", "description": "..."}}
   ]
-}}"""
+}}""" + _JSON_ONLY
 
 AUDIENCE_MAPPING_PROMPT = """Classify this blog article by target audience. For each audience type, provide a relevance score (0-100).
 
 Article Title: {title}
 Article Content Summary: {summary}
 
-Return JSON:
+Return ONLY valid JSON:
 {{
   "audiences": {{
     "beginner": {{"score": 45, "reasoning": "..."}},
@@ -87,7 +89,7 @@ Return JSON:
     "student": {{"score": 55, "reasoning": "..."}},
     "enterprise_buyer": {{"score": 20, "reasoning": "..."}}
   }}
-}}"""
+}}""" + _JSON_ONLY
 
 PLATFORM_RECOMMENDATION_PROMPT = """Evaluate this blog article for promotion on {platform}.
 
@@ -98,7 +100,7 @@ Technical Difficulty: {technical_difficulty}
 
 Platform: {platform}
 
-Return JSON:
+Return ONLY valid JSON:
 {{
   "suitability_score": 0-100,
   "reason": "...",
@@ -108,7 +110,7 @@ Return JSON:
   "audience_match": "...",
   "competition_estimate": "...",
   "expected_roi": "..."
-}}"""
+}}""" + _JSON_ONLY
 
 CAMPAIGN_GENERATION_PROMPT = """Based on the following articles and their marketing scores, generate a campaign plan to {goal}.
 
@@ -118,7 +120,7 @@ Top Articles:
 Target Audience: {audience}
 Available Platforms: {platforms}
 
-Return JSON:
+Return ONLY valid JSON:
 {{
   "name": "...",
   "goal": "...",
@@ -137,7 +139,7 @@ Return JSON:
   "steps": [
     {{"order": 1, "type": "publish", "platform": "...", "content_plan": "..."}}
   ]
-}}"""
+}}""" + _JSON_ONLY
 
 REPURPOSING_PROMPT = """Analyze this blog article and recommend content repurposing opportunities.
 
@@ -148,12 +150,12 @@ For each target format, provide suitability score (0-100), transformation notes,
 
 Target formats: linkedin_article, technical_thread, newsletter, conference_talk, workshop, podcast_pitch, video_script, github_readme, whitepaper, book_chapter
 
-Return JSON:
+Return ONLY valid JSON:
 {{
   "repurposing": [
     {{"format": "linkedin_article", "suitability_score": 85, "transformation_notes": "...", "estimated_effort": "medium"}}
   ]
-}}"""
+}}""" + _JSON_ONLY
 
 WEEKLY_REPORT_PROMPT = """Generate a weekly marketing intelligence report based on the following data:
 
