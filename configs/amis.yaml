@@ -1,0 +1,31 @@
+paths:
+  content_dir: content/posts
+  db_path: database/sqlite.db
+  chroma_dir: chroma
+  graph_dir: graph
+  campaigns_dir: campaigns
+  analytics_dir: analytics
+  generated_dir: generated
+  logs_dir: logs
+
+llm:
+  provider: ollama
+  model: llama3.1:8b
+  base_url: http://localhost:11434
+  temperature: 0.3
+  max_tokens: 4096
+
+embedding:
+  provider: sentence-transformers
+  model: all-MiniLM-L6-v2
+
+ingestion:
+  batch_size: 10
+  overwrite_existing: true
+  extract_images: true
+  extract_code_blocks: true
+
+analysis:
+  parallel_scoring: true
+  confidence_threshold: 0.7
+  max_retries: 2

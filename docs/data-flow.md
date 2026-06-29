@@ -1,0 +1,192 @@
+# Data Flow Diagrams
+
+## Ingestion Flow
+
+```
+blog/*.md
+    │
+    ▼
+┌──────────────────┐
+│ discover_files() │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐     ┌─────────────────┐
+│ parse_markdown() │────▶│ frontmatter.parse│
+└────────┬─────────┘     └─────────────────┘
+         │
+         ▼
+┌──────────────────┐
+│ extract structure│  headings, images, links, code_blocks
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ compute_metadata │  word_count, reading_time, slug, hash
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│  upsert_article  │──▶ SQLite articles table
+└──────────────────┘
+```
+
+## Analysis Flow
+
+```
+articles table
+    │
+    ├───▶ Semantic Analysis (Phase 2)
+    │         │
+    │         ▼
+    │    scores table (27 metrics per article)
+    │
+    ├───▶ Topic Extraction (Phase 3)
+    │         │
+    │         ├──▶ topics table
+    │         └──▶ article_topics table
+    │
+    └───▶ Entity Recognition (Phase 4)
+              │
+              ├──▶ entities table
+              └──▶ article_entities table
+```
+
+## Graph Construction Flow
+
+```
+┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+│  articles   │  │   topics    │  │  entities   │
+└──────┬──────┘  └──────┬──────┘  └──────┬──────┘
+       │                │                │
+       └────────────────┼────────────────┘
+                        │
+                        ▼
+               ┌─────────────────┐
+               │ relationships   │
+               │ table           │
+               └────────┬────────┘
+                        │
+                        ▼
+               ┌─────────────────┐
+               │ graph snapshot  │──▶ graph/*.json
+               └─────────────────┘
+```
+
+## Marketing Pipeline Flow
+
+```
+scores + topics + relationships
+                │
+                ▼
+        ┌───────────────┐
+        │   Marketing   │──▶ scores table (12 dimensions)
+        │   Ranking     │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │   Audience    │──▶ audience_profiles table
+        │   Mapping     │
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │   Platform    │──▶ platform_recommendations table
+        │   Recommend   │
+        └───────┬───────┘
+                │
+                ├───▶ Campaign Planner ──▶ campaigns + campaign_steps tables
+                │
+                └───▶ Content Repurposing ──▶ content_repurposing table
+```
+
+## Recommendation Flow
+
+```
+┌───────────────────┐
+│ Recommendation    │
+│ Engine            │
+└─────────┬─────────┘
+          │
+          ├──▶ best_article_today
+          ├──▶ best_for_linkedin
+          ├──▶ best_for_executives
+          ├──▶ best_book_seller
+          ├──▶ most_evergreen
+          ├──▶ highest_authority
+          ├──▶ most_underutilized
+          ├──▶ best_hidden_gem
+          ├──▶ best_followup
+          ├──▶ needs_update
+          └──▶ highest_roi_campaign
+                    │
+                    ▼
+          ┌───────────────────┐
+          │  recommendations  │
+          │  table            │
+          └─────────┬─────────┘
+                    │
+                    ▼
+          ┌───────────────────┐
+          │  Agent Interface  │──▶ MCP / Python API
+          └───────────────────┘
+```
+
+## Autonomous Loop Flow
+
+```
+Nightly (2 AM):
+    │
+    ▼
+┌─────────────────────┐
+│ 1. Ingest new files │──▶ hash comparison, skip unchanged
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ 2. Detect changes   │──▶ compare updated_at timestamps
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ 3. Recompute graph  │──▶ rebuild edges for changed articles
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ 4. Update scores    │──▶ re-analyze changed articles
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ 5. Suggest campaigns│──▶ generate for high-scoring unassigned articles
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ 6. Weekly report    │──▶ generate markdown summary
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ 7. Recommend actions│──▶ prioritize pending recommendations
+└─────────────────────┘
+```
+
+## Memory Flow
+
+```
+Every LLM call:
+    │
+    ├──▶ Check reasoning_history for prior reasoning
+    │         │
+    │         ├── Found? → Use existing (skip LLM call)
+    │         │
+    │         └── Not found? → Call LLM
+    │                              │
+    │                              ▼
+    │                     Store in reasoning_history
+    │
+    └──▶ Future agents retrieve prior reasoning
+```

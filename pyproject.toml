@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amis"
+version = "0.1.0"
+description = "Agentic Marketing Intelligence System"
+requires-python = ">=3.11"
+dependencies = [
+    "python-frontmatter>=1.1.0",
+    "markdown-it-py>=3.0.0",
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+    "pyyaml>=6.0",
+    "requests>=2.31.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+amis = "src.cli:main"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
