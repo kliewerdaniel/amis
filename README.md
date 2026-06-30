@@ -1,5 +1,7 @@
 # AMIS — Agentic Marketing Intelligence System
 
+![Screen Shot](ss.png)
+
 Turn a corpus of Markdown blog posts into an autonomous marketing knowledge graph that plans, ranks, recommends, and generates campaigns.
 
 This is not a social media post generator. This is a **reasoning engine** that understands relationships between articles, products, repositories, audiences, and marketing channels — all running locally with no cloud dependency for core operation.
