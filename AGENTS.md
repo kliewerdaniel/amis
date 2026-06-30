@@ -37,8 +37,16 @@
 - `database/sqlite.db` (~15MB)
 - Key tables: articles (134), scores (3060), topics (3725), article_topics (5083), entities (390), article_entities (498), audience_profiles (1607), platform_recommendations (1560), content_repurposing (1254), relationships (1759), campaigns (4), campaign_steps (6)
 
+### Dashboard - Static Site Generated
+- **Location**: `output/` (26MB, 171 HTML pages)
+- **Preview**: `python3 -m http.server 8080 --directory output`
+- **Rebuild**: `python3 scripts/export_data.py && cd dashboard && npm run build && cp -r out ../output`
+- **Pages**: Dashboard, Articles(134 detail), Platforms(12), Audiences(13), Campaigns(4), Topics, Knowledge Graph
+- **Stack**: Next.js 16, D3 force-directed graph, Recharts, Tailwind CSS
+- **Key fix**: `params` is a `Promise` in Next.js 16 - all dynamic routes use `await params`
+- **Key fix (blank pages)**: All internal `<a>` hrefs must include trailing slashes (e.g., `/articles/` not `/articles`) to match static export directory structure. Both `next/link` and plain `<a>` links were fixed.
+
 ### Next Steps
-1. Export campaign data for marketing use
-2. Review the 32 articles that didn't get semantic scores (score < threshold)
-3. Consider bumping entity extraction success rate
-4. Generate marketing reports from the graph/export data
+1. Review the 32 articles that didn't get semantic scores (score < threshold)
+2. Consider bumping entity extraction success rate (currently 65%)
+3. Clean up topic duplicates (e.g., "machine learning" appears 5+ times with different IDs)

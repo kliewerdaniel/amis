@@ -5,8 +5,9 @@ export function generateStaticParams() {
   return getCampaigns().map((c) => ({ id: String(c.id) }));
 }
 
-export default function CampaignDetailPage({ params }: { params: { id: string } }) {
-  const id = parseInt(params.id);
+export default async function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: idStr } = await params;
+  const id = parseInt(idStr);
   const campaign = getCampaignById(id);
   if (!campaign) notFound();
 
@@ -16,7 +17,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
   const metrics = campaign.success_metrics_json ? JSON.parse(campaign.success_metrics_json) : [];
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <a href="/campaigns" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
+      <a href="/campaigns/" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
         &larr; Back to Campaigns
       </a>
 
@@ -60,7 +61,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
             {platforms.map((p: string) => (
               <a
                 key={p}
-                href={`/platforms/${encodeURIComponent(p)}`}
+                href={`/platforms/${encodeURIComponent(p)}/`}
                 className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-sm hover:bg-blue-100"
               >
                 {p}
@@ -103,7 +104,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
                   </span>
                   {article && (
                     <a
-                      href={`/articles/${article.slug}`}
+                      href={`/articles/${article.slug}/`}
                       className="text-xs text-blue-600 hover:underline shrink-0"
                     >
                       View
@@ -141,7 +142,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
                     )}
                     {article && (
                       <a
-                        href={`/articles/${article.slug}`}
+                        href={`/articles/${article.slug}/`}
                         className="text-xs text-blue-600 hover:underline mt-1 inline-block"
                       >
                         {article.title}

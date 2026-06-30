@@ -113,7 +113,7 @@ export default function DashboardPage() {
             {topArticles.map((a, i) => (
               <a
                 key={a.id}
-                href={`/articles/${a.slug}`}
+                href={`/articles/${a.slug}/`}
                 className="flex items-center justify-between px-2 py-1.5 rounded hover:bg-gray-50 text-sm"
               >
                 <span className="truncate text-gray-800 flex-1">
@@ -134,7 +134,7 @@ export default function DashboardPage() {
             {campaigns.map((c) => (
               <a
                 key={c.id}
-                href={`/campaigns/${c.id}`}
+                href={`/campaigns/${c.id}/`}
                 className="block px-3 py-2 rounded-lg border hover:bg-gray-50"
               >
                 <div className="font-medium text-sm text-gray-900">{c.name}</div>

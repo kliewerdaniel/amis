@@ -6,10 +6,11 @@ export function generateStaticParams() {
   return Object.keys(summaries).map((type) => ({ type }));
 }
 
-export default function AudienceDetailPage({ params }: { params: { type: string } }) {
+export default async function AudienceDetailPage({ params }: { params: Promise<{ type: string }> }) {
+  const { type } = await params;
   const summaries = getAudienceSummaries();
   const audience = Object.values(summaries).find(
-    (a: any) => a.audience_type === params.type
+    (a: any) => a.audience_type === type
   );
   if (!audience) notFound();
 
@@ -17,7 +18,7 @@ export default function AudienceDetailPage({ params }: { params: { type: string 
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <a href="/audiences" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
+      <a href="/audiences/" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
         &larr; Back to Audiences
       </a>
 
@@ -35,7 +36,7 @@ export default function AudienceDetailPage({ params }: { params: { type: string 
           {aud.top_articles.map((a: any) => (
             <a
               key={a.article_id}
-              href={`/articles/${a.slug}`}
+              href={`/articles/${a.slug}/`}
               className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50"
             >
               <div className="flex-1 min-w-0">

@@ -34,7 +34,7 @@ export default function PlatformsPage() {
         {data.map((p) => (
           <a
             key={p.name}
-            href={`/platforms/${encodeURIComponent(p.name)}`}
+            href={`/platforms/${encodeURIComponent(p.name)}/`}
             className="block bg-white rounded-xl shadow-sm border p-4 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-3 mb-2">

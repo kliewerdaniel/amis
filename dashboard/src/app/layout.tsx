@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 
 const NAV_ITEMS = [
   { href: "/", label: "Dashboard", icon: "📊" },
-  { href: "/articles", label: "Articles", icon: "📄" },
-  { href: "/platforms", label: "Platforms", icon: "📱" },
-  { href: "/audiences", label: "Audiences", icon: "👥" },
-  { href: "/campaigns", label: "Campaigns", icon: "🎯" },
-  { href: "/topics", label: "Topics", icon: "🏷️" },
-  { href: "/graph", label: "Knowledge Graph", icon: "🔗" },
+  { href: "/articles/", label: "Articles", icon: "📄" },
+  { href: "/platforms/", label: "Platforms", icon: "📱" },
+  { href: "/audiences/", label: "Audiences", icon: "👥" },
+  { href: "/campaigns/", label: "Campaigns", icon: "🎯" },
+  { href: "/topics/", label: "Topics", icon: "🏷️" },
+  { href: "/graph/", label: "Knowledge Graph", icon: "🔗" },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -19,7 +19,7 @@ export default function CampaignsPage() {
           return (
             <a
               key={c.id}
-              href={`/campaigns/${c.id}`}
+              href={`/campaigns/${c.id}/`}
               className="block bg-white rounded-xl shadow-sm border p-5 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-3">

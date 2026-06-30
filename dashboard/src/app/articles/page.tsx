@@ -44,7 +44,7 @@ export default function ArticlesPage() {
         {filtered.map((a) => (
           <a
             key={a.id}
-            href={`/articles/${a.slug}`}
+            href={`/articles/${a.slug}/`}
             className="block bg-white rounded-lg border p-4 hover:shadow-sm transition-shadow"
           >
             <div className="flex items-start justify-between">

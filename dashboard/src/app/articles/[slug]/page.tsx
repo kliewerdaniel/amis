@@ -6,13 +6,14 @@ export function generateStaticParams() {
   return getArticleSummaries().map((a) => ({ slug: a.slug }));
 }
 
-export default function ArticleDetailPage({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug);
+export default async function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const article = getArticleBySlug(slug);
   if (!article) notFound();
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <a href="/articles" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
+      <a href="/articles/" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
         &larr; Back to Articles
       </a>
 

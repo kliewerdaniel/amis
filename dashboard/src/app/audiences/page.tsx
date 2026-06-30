@@ -34,7 +34,7 @@ export default function AudiencesPage() {
         {data.map((a) => (
           <a
             key={a.name}
-            href={`/audiences/${encodeURIComponent(a.name)}`}
+            href={`/audiences/${encodeURIComponent(a.name)}/`}
             className="block bg-white rounded-xl shadow-sm border p-4 hover:shadow-md transition-shadow"
           >
             <h3 className="font-medium text-gray-900 capitalize mb-1">{a.name}</h3>
