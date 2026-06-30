@@ -1,6 +1,7 @@
-_JSON_ONLY = "\n\nIMPORTANT: Return ONLY valid JSON. Do not include any explanations or text before or after the JSON."
+_JSON_ONLY = "\n\nRespond with ONLY valid JSON. Do not include any other text."
+_JSON_FIRST = "Respond with ONLY valid JSON. Do not include any other text before or after the JSON.\n\n"
 
-SEMANTIC_ANALYSIS_PROMPT = """You are a marketing intelligence analyst. Analyze the following blog article and provide scores for each dimension below.
+SEMANTIC_ANALYSIS_PROMPT = _JSON_FIRST + """You are a marketing intelligence analyst. Analyze the following blog article and provide scores for each dimension below.
 
 Article Title: {title}
 Author: {author}
@@ -28,15 +29,15 @@ Respond in valid JSON format:
   }},
   "primary_audience": "...",
   "secondary_audience": "..."
-}}""" + _JSON_ONLY
+}}"""
 
-TOPIC_EXTRACTION_PROMPT = """Extract all topics and concepts from this blog article. Classify each into the appropriate category.
+TOPIC_EXTRACTION_PROMPT = _JSON_FIRST + """Extract all topics and concepts from this blog article. Classify each into the appropriate category.
 
 Article Title: {title}
 Article Content:
 {content}
 
-Return ONLY valid JSON with these keys:
+Return ONLY valid JSON with these exact keys:
 {{
   "topics": ["..."],
   "subtopics": ["..."],
@@ -51,9 +52,9 @@ Return ONLY valid JSON with these keys:
   "cloud_providers": ["..."],
   "security_topics": ["..."],
   "optimization_topics": ["..."]
-}}""" + _JSON_ONLY
+}}"""
 
-ENTITY_RECOGNITION_PROMPT = """Extract all named entities from this blog article. For each entity, provide its name, type, and a brief description.
+ENTITY_RECOGNITION_PROMPT = _JSON_FIRST + """Extract all named entities from this blog article. For each entity, provide its name, type, and a brief description.
 
 Article Title: {title}
 Article Content:
@@ -61,19 +62,19 @@ Article Content:
 
 Entity types: person, company, book, repository, product, technology, protocol, standard, model, language, library, framework, api, cloud_service, research_paper
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with these exact keys:
 {{
   "entities": [
     {{"name": "...", "type": "person", "description": "..."}}
   ]
-}}""" + _JSON_ONLY
+}}"""
 
-AUDIENCE_MAPPING_PROMPT = """Classify this blog article by target audience. For each audience type, provide a relevance score (0-100).
+AUDIENCE_MAPPING_PROMPT = _JSON_FIRST + """Classify this blog article by target audience. For each audience type, provide a relevance score (0-100).
 
 Article Title: {title}
 Article Content Summary: {summary}
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with these exact keys:
 {{
   "audiences": {{
     "beginner": {{"score": 45, "reasoning": "..."}},
@@ -89,9 +90,9 @@ Return ONLY valid JSON:
     "student": {{"score": 55, "reasoning": "..."}},
     "enterprise_buyer": {{"score": 20, "reasoning": "..."}}
   }}
-}}""" + _JSON_ONLY
+}}"""
 
-PLATFORM_RECOMMENDATION_PROMPT = """Evaluate this blog article for promotion on {platform}.
+PLATFORM_RECOMMENDATION_PROMPT = _JSON_FIRST + """Evaluate this blog article for promotion on {platform}.
 
 Article: {title}
 Summary: {summary}
@@ -100,7 +101,7 @@ Technical Difficulty: {technical_difficulty}
 
 Platform: {platform}
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with these exact keys:
 {{
   "suitability_score": 0-100,
   "reason": "...",
@@ -110,9 +111,9 @@ Return ONLY valid JSON:
   "audience_match": "...",
   "competition_estimate": "...",
   "expected_roi": "..."
-}}""" + _JSON_ONLY
+}}"""
 
-CAMPAIGN_GENERATION_PROMPT = """Based on the following articles and their marketing scores, generate a campaign plan to {goal}.
+CAMPAIGN_GENERATION_PROMPT = _JSON_FIRST + """Based on the following articles and their marketing scores, generate a campaign plan to {goal}.
 
 Top Articles:
 {top_articles_json}
@@ -120,7 +121,7 @@ Top Articles:
 Target Audience: {audience}
 Available Platforms: {platforms}
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with these exact keys:
 {{
   "name": "...",
   "goal": "...",
@@ -139,9 +140,9 @@ Return ONLY valid JSON:
   "steps": [
     {{"order": 1, "type": "publish", "platform": "...", "content_plan": "..."}}
   ]
-}}""" + _JSON_ONLY
+}}"""
 
-REPURPOSING_PROMPT = """Analyze this blog article and recommend content repurposing opportunities.
+REPURPOSING_PROMPT = _JSON_FIRST + """Analyze this blog article and recommend content repurposing opportunities.
 
 Article: {title}
 Content Summary: {summary}
@@ -150,12 +151,12 @@ For each target format, provide suitability score (0-100), transformation notes,
 
 Target formats: linkedin_article, technical_thread, newsletter, conference_talk, workshop, podcast_pitch, video_script, github_readme, whitepaper, book_chapter
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with these exact keys:
 {{
   "repurposing": [
     {{"format": "linkedin_article", "suitability_score": 85, "transformation_notes": "...", "estimated_effort": "medium"}}
   ]
-}}""" + _JSON_ONLY
+}}"""
 
 WEEKLY_REPORT_PROMPT = """Generate a weekly marketing intelligence report based on the following data:
 
