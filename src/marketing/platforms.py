@@ -13,6 +13,19 @@ PLATFORMS = [
 ]
 
 
+def _safe_str(v):
+    if isinstance(v, (dict, list)):
+        return str(v)
+    if v is None:
+        return ""
+    return str(v)
+
+def _safe_int(v):
+    if isinstance(v, (int, float)):
+        return int(v)
+    return 0
+
+
 def store_platform_recommendation(conn: sqlite3.Connection, article_id: int, platform: str, data: dict):
     conn.execute("""
         INSERT OR REPLACE INTO platform_recommendations
@@ -21,14 +34,14 @@ def store_platform_recommendation(conn: sqlite3.Connection, article_id: int, pla
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         article_id, platform,
-        data.get("suitability_score", 0),
-        data.get("reason", ""),
-        data.get("optimal_format", ""),
-        data.get("posting_frequency", ""),
-        data.get("ideal_cta", ""),
-        data.get("audience_match", ""),
-        data.get("competition_estimate", ""),
-        data.get("expected_roi", ""),
+        _safe_int(data.get("suitability_score")),
+        _safe_str(data.get("reason")),
+        _safe_str(data.get("optimal_format")),
+        _safe_str(data.get("posting_frequency")),
+        _safe_str(data.get("ideal_cta")),
+        _safe_str(data.get("audience_match")),
+        _safe_str(data.get("competition_estimate")),
+        _safe_str(data.get("expected_roi")),
     ))
 
 
